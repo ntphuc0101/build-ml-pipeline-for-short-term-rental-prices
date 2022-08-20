@@ -65,13 +65,13 @@ def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_th
 ########################################################
 def test_row_count(data):
     """
-    ? the shape range of dataframe ?
+    check whether the shape range of dataframe is
     """
     assert 15000 < data.shape[0] < 1000000
 
 
 def test_price_range(data, min_price, max_price):
     """
-    ? the price range is between min_price and max_price ?
+    whether the price range is between min_price and max_price is
     """
     assert data['price'].between(min_price, max_price).all()

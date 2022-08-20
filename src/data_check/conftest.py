@@ -21,7 +21,6 @@ def data(request):
 
     if data_path is None:
         pytest.fail("You must provide the --csv option on the command line")
-
     df = pd.read_csv(data_path)
 
     return df

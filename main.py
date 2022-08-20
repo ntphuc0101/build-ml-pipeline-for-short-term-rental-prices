@@ -13,10 +13,6 @@ _steps = [
     "data_check",
     "data_split",
     "train_random_forest",
-    # NOTE: We do not include this in the steps so it is not run by mistake.
-    # You first need to promote a model export to "prod" before you can run this,
-    # then you need to run this step explicitly
-#    "test_regression_model"
 ]
 
 
@@ -64,9 +60,9 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
-            ##################
-            # Implement here #
-            ##################
+            ########################################################################
+            # Checking the quality of dataset
+            ########################################################################
             _ = mlflow.run(
                 os.path.join(hydra.utils.get_original_cwd(), "src", "data_check"),
                 "main",
@@ -118,18 +114,26 @@ def go(config: DictConfig):
                     "stratify_by": config["modeling"]["stratify_by"],
                     "rf_config": rf_config,
                     "max_tfidf_features": config["modeling"]["max_tfidf_features"],
-                    "output_artifact": "random_forest_export",
+                    "output_artifact": "random_forest_export"
+                    ,
                 },
             )
-            pass
+
 
         if "test_regression_model" in active_steps:
 
-            ##################
-            # Implement here #
-            ##################
-
-            pass
+            ########################################################################
+            # Testing regression model
+            ########################################################################
+            #_ = mlflow.run( f"{config['main']['components_repository']}/test_regression_model",
+            _ = mlflow.run(
+                os.path.join(hydra.utils.get_original_cwd(), "components/test_regression_model"),
+                "main",
+                parameters={
+                    "mlflow_model": "random_forest_export:prod",
+                    "test_dataset": "test_data.csv:latest",
+                },
+            )
 
 
 if __name__ == "__main__":

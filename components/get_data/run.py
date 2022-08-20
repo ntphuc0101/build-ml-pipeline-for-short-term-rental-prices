@@ -15,7 +15,10 @@ logger = logging.getLogger()
 
 
 def go(args):
-
+    """
+    logging weights and biases
+    and upload files to wandb.ai
+    """
     run = wandb.init(job_type="download_file")
     run.config.update(args)
 
